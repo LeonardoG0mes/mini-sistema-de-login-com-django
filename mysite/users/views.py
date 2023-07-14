@@ -4,27 +4,42 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-
 from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.contrib import messages
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 def cadastro(request):
     if request.method == "GET":
         return render(request, 'cadastro.html')
-
     else:
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = User.objects.filter(username=username).first()
-        if user:
-            return HttpResponse('Usuário já existe')
-            
+        user_username = User.objects.filter(username=username).first()
+        user_email = User.objects.filter(email=email).first()
+
+        if user_username:
+            messages.error(request, 'Usuário já existe')
+            return redirect('cadastro.html')
+
+        elif user_email:
+            messages.error(request, 'Endereço de e-mail já está sendo usado')
+            return redirect('cadastro')
+
         else:
+            try:
+                validate_password(password, user=User(username=username))
+            except ValidationError as e:
+                error_messages = [str(error) for error in e]
+                messages.error(request, ', '.join(error_messages))
+                return redirect('cadastro')
+
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
-
-            return HttpResponse("Usuario cadastrado com sucesso")
-
+            messages.success(request, 'Usuário cadastrado com sucesso')
+            return redirect('login')
 
 
 def login(request):
@@ -41,13 +56,16 @@ def login(request):
             return redirect('/auth/home')
 
         else:
-            return HttpResponse('Usuário ou senha incorretos')
-
+            messages.error(request, 'Usuário ou senha incorretos')
+            return redirect('login')
 
 @login_required(login_url='/auth/login/')
 def home(request):
-    return HttpResponse('home')
+    if request.method == 'POST':
+        logout(request)
+        return redirect('/auth/login')
 
+    return render(request, 'home.html')
 
 
 

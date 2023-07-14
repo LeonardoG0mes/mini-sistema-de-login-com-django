@@ -1,22 +1,36 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Cadastro</title>
 </head>
 <body>
-    <h1>Cadastro</h1>
-    <form action="{% url 'cadastro' %}" method="POST">{% csrf_token %}
-        <input type="text" placeholder="Username" name="username">
-        <br>
-        <input type="email" placeholder="Email" name="email">
-        <br>
-        <input type="password" placeholder="Password" name="password">
-        <br>
-        <input type="submit" value="cadastrar">
+    <div class="container">
+        <h1>Cadastro</h1>
 
-    </form>
-    
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form id="cadastroForm" action="{% url 'cadastro' %}" method="POST"> {% csrf_token %}
+            <input type="text" placeholder="Username" name="username">
+            <br>
+            <input type="email" placeholder="Email" name="email">
+            <br>
+            <input type="password" placeholder="Password" name="password" id="password">
+            <br>
+            <input type="submit" value="cadastrar" id="submitBtn" disabled>
+            <br>
+            <a href="{% url 'login' %}">Já tem uma conta?</a>
+        </form>
+    </div>
+    <script src="{% static 'js/cadastro.js' %}"></script>
 </body>
 </html>
