@@ -22,7 +22,7 @@ def cadastro(request):
 
         if user_username:
             messages.error(request, 'Usuário já existe')
-            return redirect('cadastro.html')
+            return redirect('cadastro')
 
         elif user_email:
             messages.error(request, 'Endereço de e-mail já está sendo usado')
