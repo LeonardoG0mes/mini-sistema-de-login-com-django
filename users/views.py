@@ -7,8 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.password_validation import validate_password, CommonPasswordValidator, MinimumLengthValidator
 from django.core.exceptions import ValidationError
+
 
 def cadastro(request):
     if request.method == "GET":
@@ -28,18 +29,29 @@ def cadastro(request):
             messages.error(request, 'Endereço de e-mail já está sendo usado')
             return redirect('cadastro')
 
-        else:
-            try:
-                validate_password(password, user=User(username=username))
-            except ValidationError as e:
-                error_messages = [str(error) for error in e]
-                messages.error(request, ', '.join(error_messages))
-                return redirect('cadastro')
+        # Verificar se todos os campos foram preenchidos
+        if not username or not email or not password:
+            messages.error(request, 'Todos os campos devem ser preenchidos')
+            return redirect('cadastro')
 
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
-            messages.success(request, 'Usuário cadastrado com sucesso')
-            return redirect('login')
+        try:
+            # Adicione os validadores personalizados na lista de validadores
+            validate_password(password, user=User(username=username), password_validators=[
+                MinimumLengthValidator(),
+                CommonPasswordValidator(),
+                # Outros validadores personalizados podem ser adicionados aqui
+            ])
+        except ValidationError as e:
+            error_messages = [str(error) for error in e]
+            messages.error(request, ', '.join(error_messages))
+            return redirect('cadastro')
+
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+        messages.success(request, 'Usuário cadastrado com sucesso!')
+        return redirect('login')
+
+
 
 
 def login(request):
