@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.password_validation import validate_password, CommonPasswordValidator, MinimumLengthValidator
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 def cadastro(request):
@@ -79,5 +80,22 @@ def home(request):
 
     return render(request, 'home.html')
 
+@login_required(login_url='/auth/login/')
+def trocar_senha(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
 
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Sua senha foi alterada com sucesso!')
+            return redirect('home')
+        else:
+            errors = form.errors
+            for field, field_errors in errors.items():
+                for error in field_errors:
+                    messages.error(request, error)
 
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'trocar_senha.html', {'form': form})

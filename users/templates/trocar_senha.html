@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trocar Senha</title>
+    <link rel="stylesheet" href="{% static 'css/trocar.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h2>Alterar Senha</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="id_old_password">Senha antiga:</label>
+        <input type="password" name="old_password" id="id_old_password">
+
+        <label for="id_new_password1">Nova senha:</label>
+        <input type="password" name="new_password1" id="id_new_password1">
+
+        <label for="id_new_password2">Confirme a nova senha:</label>
+        <input type="password" name="new_password2" id="id_new_password2">
+
+        <input type="submit" value="Salvar" id="submitBtn">
+    </form>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>
+                    {% if message.tags == 'error' %}
+                        Erro: {{ message }}
+                    {% elif message.tags == 'warning' %}
+                        Atenção: {{ message }}
+                    {% else %}
+                        {{ message }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+  </div>
+</body>
+</html>
