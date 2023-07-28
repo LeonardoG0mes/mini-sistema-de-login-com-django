@@ -119,7 +119,7 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
-DEFAULT_FROM_EMAIL = 'leomoreiradovale@gmail.com'
+DEFAULT_FROM_EMAIL = 'seu_email@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
