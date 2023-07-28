@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Trocar Senha</title>
-    <link rel="stylesheet" href="{% static 'css/trocar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/troca.css' %}">
 </head>
 <body>
   <div class="container">
@@ -12,13 +12,10 @@
         {% csrf_token %}
         <label for="id_old_password">Senha antiga:</label>
         <input type="password" name="old_password" id="id_old_password">
-
         <label for="id_new_password1">Nova senha:</label>
         <input type="password" name="new_password1" id="id_new_password1">
-
         <label for="id_new_password2">Confirme a nova senha:</label>
         <input type="password" name="new_password2" id="id_new_password2">
-
         <input type="submit" value="Salvar" id="submitBtn">
     </form>
 
