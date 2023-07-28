@@ -38,7 +38,35 @@ Substitua os campos `your_smtp_host`, `your_smtp_port`, `your_email@example.com`
 2. **Verificação de Email:** Após o cadastro, o usuário receberá um código de autenticação no email cadastrado. Digite o código na página de verificação de código. Caso o código seja válido e dentro do prazo de expiração, o usuário será autenticado e redirecionado para a página inicial.
 
 3. **Reenvio de Código:** Se o usuário não tiver recebido o código ou ele tiver expirado, é possível solicitar um novo código clicando no link ou botão "Reenviar Código". Um novo código será gerado e enviado ao email cadastrado.
+Certifique-se de ter o Django instalado no seu ambiente virtual Python. Caso ainda não tenha instalado, você pode fazê-lo usando o seguinte comando:
 
+###Configurações necessarias 
+
+Copy code
+pip install django
+Após garantir que o Django está instalado, verifique se o seu aplicativo Django está configurado corretamente. No seu caso, parece que o aplicativo está configurado com o nome "users", pois você importou o modelo "PerfilUsuario" do arquivo "models.py" no código anterior.
+
+Abra um terminal e navegue até o diretório raiz do seu projeto Django, onde se encontra o arquivo "manage.py".
+
+Agora, para criar as migrações iniciais, execute o seguinte comando no terminal:
+
+Copy code
+python manage.py makemigrations
+Esse comando irá analisar o modelo do seu aplicativo e criar um arquivo de migração para as alterações detectadas.
+
+Em seguida, aplique as migrações para atualizar o banco de dados usando o comando:
+
+Copy code
+python manage.py migrate
+Esse comando aplicará as migrações pendentes e atualizará o banco de dados de acordo com as alterações no modelo.
+
+Se você tiver definido algum código para criar usuários ou realizar outras operações no arquivo "views.py", certifique-se de que ele esteja correto e funcione conforme esperado.
+
+Agora, seu banco de dados deve estar configurado com as tabelas necessárias para o modelo "PerfilUsuario" e outras tabelas padrão do Django, como a tabela de usuários.
+
+Com esses passos, você deve ter realizado as migrações necessárias e configurado corretamente o seu aplicativo para trabalhar com o modelo "PerfilUsuario". Lembre-se de garantir que suas configurações de segurança e autenticação estejam adequadas para proteger informações sensíveis no aplicativo.
+
+Caso ainda enfrente algum problema ou precise de mais ajuda, não hesite em perguntar!
 ### Observações
 
 O projeto ainda está em desenvolvimento e possui algumas limitações, como o erro na página de verificação de código quando o usuário já está autenticado. Esse problema será resolvido em uma futura atualização.
