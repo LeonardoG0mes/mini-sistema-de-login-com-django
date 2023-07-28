@@ -102,6 +102,7 @@ def verificar_codigo(request, email):
 
 @login_required(login_url='/auth/login/')
 def reenviar_codigo(request, email):
+    
     # Verifique se o usuário tem um perfil de usuário associado ao email fornecido
     perfil_usuario = PerfilUsuario.objects.filter(user__email=email).first()
 
